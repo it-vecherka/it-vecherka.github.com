@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Поиграй со мной - Выпуск с красивым названием - Вечерний Анахорет™</title>
+
+  <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+<meta http-equiv="Content-Language" content="en" />
+<meta http-equiv="imagetoolbar" content="no" />
+
+<meta name="viewport" content="width = device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable = no" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<link rel="apple-touch-startup-image" href="/startup.png" />
+<meta name="HandheldFriendly" content="True" />
+<meta http-equiv="cleartype" content="on" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta http-equiv="Page-Exit" content="progid:DXImageTransform.Microsoft.Fade(Duration=0.2)" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+
+<meta name="robots" content="all" />
+
+<link rel="copyright" href="" />
+<link rel="author" href="" />
+
+
+  <link rel="shortcut icon" href="/favicon.ico" />
+<link rel="icon" type="image/png" href="/favicon.png" />
+<link rel="icon" type="image/x-icon" href="/android-favicon.ico"  />
+<link rel="apple-touch-icon" href="/apple-touch-icon-iphone.png" />
+<link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-ipad.png" />
+<link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-iphone4.png" />
+
+
+
+  <!--[if IE]>
+  <script type="text/javascript">
+    //<![CDATA[
+    document.createElement('header');
+    document.createElement('nav');
+    document.createElement('section');
+    document.createElement('article');
+    document.createElement('author');
+    document.createElement('aside');
+    document.createElement('footer');
+  //]]>
+  </script>
+<![endif]-->
+<style type="text/css">
+  header, nav, section, article, aside, footer {
+    display: block;
+  }
+</style>
+
+
+  <link href="/v3/application.css" media="screen" rel="stylesheet" type="text/css" />
+
+  <meta content="authenticity_token" name="csrf-param" />
+<meta content="SnxBQ+M+ctryh2Zt55v4AY0tkx+sPlQKsTvHH8C6t40=" name="csrf-token" />
+  
+
+</head>
+<body>
+<div id="container">
+  <header>
+    <div class="wrapper">
+      <a href="/"><img alt="Вечерний Анахорет™" src="/v3/logo.ru.png" title="Вечерний Анахорет™" /></a>
+      <small class="issue">Третий выпуск</small>
+      
+    </div>
+  </header>
+
+  
+
+  <section id="main" role="main">
+    <div class="wrapper">
+      <div class="author">@Dmitry Stropaloff</div>
+
+<h1>Поиграй со мной</h1>
+
+<div>
+  <p>Итак, собственно что такое <a href="http://scala.playframework.org/">Play!</a> - это современный веб-фреймворк на Java в его версии 1.x и Scala/Java в его грядущей второй версии. Одним из значительных отличий Play! от других фреймворков, основанных на Java (включая и Lift), является то, что он не базируется на Servlet API, но предоставляет свой полный стек для запуска приложений, и как написано в официальном FAQ - &quot;Play is platform&quot;. Впрочем, если требуется, то приложение на Play! можно запустить с помощью Tomcat, Jetty или другого контейнера. Да, и ещё можно забыть об xml для конфигурации приложения.</p>
+
+<p>Play! был выбран заказчиком, а нами опробован на этапе переговоров. Впечатления и тогда, и сейчас от Play!/Java целиком положительные. Простой и понятный роутинг, привычный по другим фреймворкам скелет приложения, хороший шаблонный движок, встроенная работа с тестами (включая Selenium), наличие документации, FAQ, ответов на StackOverflow, поддержка в IDE и редакторах - Eclipse, Idea, Netbeans, TextMate, Vim. Развёртывание предельно простое - распаковываем тарбол, прописываем каталог в PATH, &quot;<code>$ play new MyApp</code>&quot; - вот и все. С Play! быстрый старт действительно получается быстрым. И я считаю, что в таком виде фреймворк вполне годен для написания настоящих, &quot;серьёзных&quot; приложений.</p>
+
+<p>Но заказчик захотел Scala. Предполагалась тесная интеграция с внешними сервисами, используя их XML API, а в таком случае на полную бы заработали встроенные средства языка, которые в Scala очень мощные. Да и согласитесь - Scala сама по себе интереснее. Можно сказать, что в Play! 1.x встроена поддержка Scala &quot;из коробки&quot; - в зависимости прописывается модуль, вместе с которым в проект приехали новый шаблонный движок и DSL для SQL-запросов Anorm взамен стандартного ORM. От последнего пришлось отказаться буквально в первый день: задумка хорошая, но отсутствие нормальной документации, отсутствие поддержки сообщества и общая сырость не позволили применить Anorm. На место был возвращён ORM на основе JPA. А дальше начали проявляться проблемы обратной совместимости Scala c Java: различия в работе с коллекциями, несоответствие типов (в Scala как таковых нет перечислений (enum), например), различия в объектной модели, доступ к API фрейморка в большинстве случаев через специальную прослойку, неработающие со Scala-кодом Java-модули. Шаблонизатор тоже отличился чувствительностью к переносу строки, пробелам, а иногда и к порядку следования аргументов. Пожалуй, единственное, что действительно понравилось, это библиотека для тестирования Scala Test.</p>
+
+<p>Я для себя сделал следующие выводы: выбирать надо фреймворк, изначально написанный на том языке, который вы будете использовать. В случае Scala Lift гораздо привлекательнее Play!/Scala по всем статьям. Возможно, с выходом второй версии Play!, интеграция станет гораздо лучше, но пока она очень сырая. И ещё такой момент - изначальная Java-архитектура фреймворка все равно находит отражение в Scala-коде, а зачастую и не дает применять все возможности языка. Да, можно писать map вместо for, сократить общее количество кода, но, по большому счету, это мало что меняет - писать &quot;по-другому&quot; не очень-то получится.</p>
+
+<p>Так или иначе, но пока что Play!/Scala - сырой стек, и использовать его я бы не рекомендовал.</p>
+
+</div>
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'vecherka';
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+
+
+
+    </div>
+  </section>
+
+  <span id="empty_footer"></span>
+  <footer>
+    <div class="wrapper">
+      <a href="https://twitter.com/it_vecherka" class="twitter-follow-button" data-show-count="false" data-lang="ru" data-show-screen-name="false">Читать @it_vecherka</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+
+      <div class="copyright"><div>&copy;&nbsp;<strong>Вечерний Анахорет&trade;</strong></div>
+<div><small>Все права защищены кольчугой из&nbsp;чешуи дракона +3</small></div>
+<div><small>Предложения и&nbsp;замечания <a href="mailto:aratak@anahoret.com">шлите редактору</a>.</small></div>
+
+</div>
+      
+    </div>
+  </footer>
+</div>
+<!-- Yandex.Metrika counter -->
+<div style="display:none;"><script type="text/javascript">
+(function(w, c) {
+    (w[c] = w[c] || []).push(function() {
+        try {
+            w.yaCounter10762477 = new Ya.Metrika({id:10762477, enableAll: true});
+        }
+        catch(e) { }
+    });
+})(window, "yandex_metrika_callbacks");
+</script></div>
+<script src="//mc.yandex.ru/metrika/watch.js" type="text/javascript" defer="defer"></script>
+<noscript><div><img src="//mc.yandex.ru/watch/10762477" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+
+</body>
+</html>

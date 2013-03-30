@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Хеши: в поисках правды - Олимпиада - Вечерний Анахорет™</title>
+
+  <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+<meta http-equiv="Content-Language" content="en" />
+<meta http-equiv="imagetoolbar" content="no" />
+
+<meta name="viewport" content="width = device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable = no" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<link rel="apple-touch-startup-image" href="/startup.png" />
+<meta name="HandheldFriendly" content="True" />
+<meta http-equiv="cleartype" content="on" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta http-equiv="Page-Exit" content="progid:DXImageTransform.Microsoft.Fade(Duration=0.2)" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+
+<meta name="robots" content="all" />
+
+<link rel="copyright" href="" />
+<link rel="author" href="" />
+
+
+  <link rel="shortcut icon" href="/favicon.ico" />
+<link rel="icon" type="image/png" href="/favicon.png" />
+<link rel="icon" type="image/x-icon" href="/android-favicon.ico"  />
+<link rel="apple-touch-icon" href="/apple-touch-icon-iphone.png" />
+<link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-ipad.png" />
+<link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-iphone4.png" />
+
+
+
+  <!--[if IE]>
+  <script type="text/javascript">
+    //<![CDATA[
+    document.createElement('header');
+    document.createElement('nav');
+    document.createElement('section');
+    document.createElement('article');
+    document.createElement('author');
+    document.createElement('aside');
+    document.createElement('footer');
+  //]]>
+  </script>
+<![endif]-->
+<style type="text/css">
+  header, nav, section, article, aside, footer {
+    display: block;
+  }
+</style>
+
+
+  <link href="/v4/application.css" media="screen" rel="stylesheet" type="text/css" />
+  <meta content="authenticity_token" name="csrf-param" />
+<meta content="qlV878vjorhJ0W+GYBwB2QrAchJ/il6JHlq8RCmI2yc=" name="csrf-token" />
+
+
+</head>
+<body>
+<div id="container">
+  <header>
+    <div class="wrapper">
+      <a href="/"><img alt="Вечерний Анахорет™" src="/v4/logo.ru.png" title="Вечерний Анахорет™" /></a>
+      <small class="issue">Четвертый выпуск</small>
+
+    </div>
+  </header>
+
+
+
+  <section id="main" role="main">
+    <div class="wrapper">
+      <div class="author">@Dmitriy Kiriyenko</div>
+
+<h1>Хеши: в поисках правды</h1>
+
+<div>
+  <p>Не знаю, для скольких это будет сюрпризом, но хэш-таблица, в отличие от, например, сбалансированного дерева, имеет вероятностное поведение. Она задумана как контейнер с операциями записать-прочитать-удалить по O(1) каждая, но на практике это не так.</p>
+
+<p>На практике это Θ(1), то есть, в среднем и сбалансированном анализе это константа. В худшем случае это O(N).</p>
+
+<p>Однако же, быстрая сортировка, применяемая в хвост и в гриву в библиотечных функциях (например, в bash-функции sort, в Array#sort в Руби, тысячи их), имеет сходные характеристики - несмотря на то, что он в большинстве случаев O(N*log(N)), в худших случаях он O(n^2), что ставит его на одну доску с пузырьком и делает асимптотически хуже той же сортировки слиянием. Но ведь в большинстве случаев используется именно он! А дело в том, что худшие случаи редки, а в сбалансированном случае он не только имеет хорошую алгоритмическую сложность, но и правильно расходует память и имеет чрезвычайно низкий коэффициент при этой самой &quot;тэте&quot;.</p>
+
+<p>Теперь посмотрим на хэш-таблицы. Мы привыкли думать о операции вставки в хэш-таблицу как O(1), но это не так, поскольку на каком-то этапе нужно перевыделить память и в ходе этого выполняется rehash. Именно поэтому в приложениях, в требованиях к которым числится гарантированное время отклика, использование хэш-таблиц как структур хранения данных противопоказанно, или хотя бы требует осторожности, поскольку на очередной вставке всё может тупо подлагнуть и довольно сильно.</p>
+
+<p>Однако же, давайте представим, что у нас не приложение, а вычислительный скрипт. Нам не важно время одной операции. Давайте посмотрим, как часто выполняется rehash. Вот принятие решения, делать или не делать rehash: <a href="https://github.com/ruby/ruby/blob/trunk/st.c#L487"><a href="https://github.com/ruby/ruby/blob/trunk/st.c#L487">https://github.com/ruby/ruby/blob/trunk/st.c#L487</a></a>. _Если среднее число записей в одной корзинке больше <a href="https://github.com/ruby/ruby/blob/trunk/st.c#L35">магического числа 5</a>_.  Новый же размер определяется <a href="https://github.com/ruby/ruby/blob/trunk/st.c#L151">ближайшими простыми числами к степеням двойки</a>. То есть, при вставке N элементов, будет выполнено O(log(N)) операций rehash. А каждый rehash (например, i-тый по счёту rehash) будет выполнен не на N элементах, а на простом числе, ближайшем к 2^i. В итоге, имеем сумму геометрической прогрессии с шагом 2, заканчивающейся на N/2. То есть, асимптотически, N.</p>
+
+<p>Итого на N операций вставки имеем (N*O(1) + O(N)) вычислительную сложность.</p>
+
+<p>Теперь с чтением из хэша. Тут сложнее и здесь асимптотически действительно всё плохо, потому что именно здесь вступает в силу то самое вероятностное поведение. Если, к примеру, реализовать хэш-функцию, как return 666, будем иметь ярко выраженную O(N) сложность на произвольный доступ. К счастью, так хэш-функцию никто не реализует.</p>
+
+<p>Руби 1.8, 1.9 и 2.0 используют так называемый <a href="https://sites.google.com/site/murmurhash/">Murmur hash</a> (<a href="https://github.com/ruby/ruby/blob/trunk/st.c#L1252"><a href="https://github.com/ruby/ruby/blob/trunk/st.c#L1252">https://github.com/ruby/ruby/blob/trunk/st.c#L1252</a></a>). Этот алгоритм проходит &quot;<a href="http://burtleburtle.net/bob/hash/doobs.html">пыточный тест Боба Дженкинса</a>&quot; и не даёт коллизий на 4-х байтных ключах даже худшем случае. 4-х байтные ключи - это целые числа до двух миллиардов по модулю. В целом же, для любой разумной практической реализации верен тот факт, что коллизий немного. Конечно же, даже очень большое поле возможных хэшей для не очень большого подмножества значений будет давать коллизию с весьма высокой вероятностью. Так называемый <a href="http://en.wikipedia.org/wiki/Birthday_paradox">парадокс дней рождения</a>. Но одна коллизия - это в среднем пять операций (помните магическое число). А 1000 коллизий в Murmur hash случится и вовсе с вероятностью в миллиард раз меньшей, чем вероятность попадения метеора в ваш офис, если вероятность одной будет составлять аж 95%. </p>
+
+<p>Таким образом, с любой разумной вероятностью стоимость извлечения из хэш-таблицы по ключу - константа. Редкие случаи коллизий во-первых, порождают, конечно, O(N), но Θ(1), а во-вторых невероятно редки.</p>
+
+<p>Подвожу итог.</p>
+
+<p>Хэш-таблица обладает серьёзными недостатками в производительности, не позволяющими использовать её в системах реального времени, там, где требуется <em>гарантированное</em> время отклика. Но в качестве структуры данных для реализации вычислительного алгоритма, операции вставки и произвольного доступа можно считать имеющими константную сложность.</p>
+
+</div>
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'vecherka';
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+
+
+
+    </div>
+  </section>
+
+  <span id="empty_footer"></span>
+  <footer>
+    <div class="wrapper">
+      <a href="https://twitter.com/it_vecherka" class="twitter-follow-button" data-show-count="false" data-lang="ru" data-show-screen-name="false">Читать @it_vecherka</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+
+      <div class="copyright"><div>&copy;&nbsp;<strong>Вечерний Анахорет&trade;</strong></div>
+<div><small>Все права защищены кольчугой из&nbsp;чешуи дракона +3</small></div>
+<div><small>Предложения и&nbsp;замечания <a href="mailto:aratak@anahoret.com">шлите редактору</a>.</small></div>
+
+</div>
+
+    </div>
+  </footer>
+</div>
+<!-- Yandex.Metrika counter -->
+<div style="display:none;"><script type="text/javascript">
+(function(w, c) {
+    (w[c] = w[c] || []).push(function() {
+        try {
+            w.yaCounter10762477 = new Ya.Metrika({id:10762477, enableAll: true});
+        }
+        catch(e) { }
+    });
+})(window, "yandex_metrika_callbacks");
+</script></div>
+<script src="//mc.yandex.ru/metrika/watch.js" type="text/javascript" defer="defer"></script>
+<noscript><div><img src="//mc.yandex.ru/watch/10762477" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+
+</body>
+</html>

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Давайте языками померяемся - Олимпиада - Вечерний Анахорет™</title>
+
+  <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+<meta http-equiv="Content-Language" content="en" />
+<meta http-equiv="imagetoolbar" content="no" />
+
+<meta name="viewport" content="width = device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable = no" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<link rel="apple-touch-startup-image" href="/startup.png" />
+<meta name="HandheldFriendly" content="True" />
+<meta http-equiv="cleartype" content="on" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta http-equiv="Page-Exit" content="progid:DXImageTransform.Microsoft.Fade(Duration=0.2)" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+
+<meta name="robots" content="all" />
+
+<link rel="copyright" href="" />
+<link rel="author" href="" />
+
+
+  <link rel="shortcut icon" href="/favicon.ico" />
+<link rel="icon" type="image/png" href="/favicon.png" />
+<link rel="icon" type="image/x-icon" href="/favicon.ico"  />
+<link rel="apple-touch-icon" href="/apple-touch-icon-iphone.png" />
+<link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-ipad.png" />
+<link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-iphone4.png" />
+
+
+
+  <!--[if IE]>
+  <script type="text/javascript">
+    //<![CDATA[
+    document.createElement('header');
+    document.createElement('nav');
+    document.createElement('section');
+    document.createElement('article');
+    document.createElement('author');
+    document.createElement('aside');
+    document.createElement('footer');
+  //]]>
+  </script>
+<![endif]-->
+<style type="text/css">
+  header, nav, section, article, aside, footer {
+    display: block;
+  }
+</style>
+
+
+  <link href="/v5/application.css" media="screen" rel="stylesheet" type="text/css" />
+  <meta content="authenticity_token" name="csrf-param" />
+<meta content="qlV878vjorhJ0W+GYBwB2QrAchJ/il6JHlq8RCmI2yc=" name="csrf-token" />
+
+
+</head>
+<body>
+<div id="container">
+  <header>
+    <div class="wrapper">
+      <a href="/"><img alt="Вечерний Анахорет™" src="/v5/logo.ru.png" title="Вечерний Анахорет™" /></a>
+      <small class="issue">Четвертый выпуск</small>
+
+    </div>
+  </header>
+
+
+
+  <section id="main" role="main">
+    <div class="wrapper">
+      <div class="author"></div>
+
+<h1>Давайте языками померяемся</h1>
+
+<div>
+  <p>Вот только что попалась на глаза статья Лутца Претшельта &quot;<a href="http://page.mi.fu-berlin.de/prechelt/Biblio/jccpprt_computer2000.pdf">Эмпирическое сравнение 7 языков программирования</a>&quot;. Статья годная и маленькая, к прочтению рекомендую.</p>
+
+<p>Сравнение языков программирования в ней делается на основе довольно небезынтересной задачи. </p>
+
+<h3>Кодирование номера телефона.</h3>
+
+<p>Сопоставить телефонному номеру фразу. На вход подаётся словарь, для примера можно взять <a href="https://dl.dropbox.com/u/8790751/wordlist.txt">вот этот</a>. Потом нужно принять телефонный номер и вернуть все возможные фразы, которыми его можно закодировать. Кодирование идёт на основе букв, которые традиционно пишут на клавишах телефона:</p>
+
+<p><code>{ &quot;2&quot; =&gt; &quot;ABC&quot;, &quot;3&quot; =&gt; &quot;DEF&quot;, &quot;4&quot; =&gt; &quot;GHI&quot;, &quot;5&quot; =&gt; &quot;JKL&quot;, &quot;6&quot; =&gt; &quot;MNO&quot;, &quot;7&quot; =&gt; &quot;PQRS&quot;, &quot;8&quot; =&gt; &quot;TUV&quot;, &quot;9&quot; =&gt; &quot;WXYZ&quot; }</code></p>
+
+<p>Задача - найти в словаре все комбинации слов, которыми может быть закодирован этот телефонный номер. Например, для номера &quot;63263379355&quot; одна из возможных кодировок - &quot;me codes well&quot;, всего же возможных расшифровок 57.</p>
+
+<p>Эта задача, в отличие от многих, здесь загаданных, не имеет хитрого читерского алгоритма, позволяющего быстро прийти к успеху. Конечно, и здесь можно натупить, но, скорее всего, к правильному решению вы придёте быстро. Интересно помериться количеством строк, изящностью, читаемостью и скоростью работы/потреблением памяти. Чем больше здесь будет разных языков, тем лучше. Приглашаются джависты, скалисты, рубисты, джаваскриптизёры и кофескриптизёры, кложа и хаскель, питон, баш/zsh и с(++), ну и, конечно, Кутейко.</p>
+
+<p>Подготовьте программу к получению текстового файла, каждая строка которого - номер телефона, и пусть выводом программы будет &quot;номер - возможная кодировка&quot;, т.е.,</p>
+
+<p><code>номер1 возможная_кодировка1</code><br>
+<code>номер1 возможная_кодировка2</code><br>
+<code>номер1 возможная_кодировка3</code><br>
+<code>номер2 возможная_кодировка1</code></p>
+
+<p>для того, чтобы можно было проверить под нагрузкой.</p>
+
+<p>Вот репозиторий, в который нужно сдать решение: <a href="https://github.com/dmitriy-kiriyenko/proglang-contest"><a href="https://github.com/dmitriy-kiriyenko/proglang-contest">https://github.com/dmitriy-kiriyenko/proglang-contest</a></a>.</p>
+
+<p>Защити честь родного / тайно любимого языка!</p>
+
+</div>
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'vecherka';
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+
+
+
+    </div>
+  </section>
+
+  <span id="empty_footer"></span>
+  <footer>
+    <div class="wrapper">
+      <a href="https://twitter.com/it_vecherka" class="twitter-follow-button" data-show-count="false" data-lang="ru" data-show-screen-name="false">Читать @it_vecherka</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+
+      <div class="copyright"><div>&copy;&nbsp;<strong>Вечерний Анахорет&trade;</strong></div>
+<div><small>Все права защищены кольчугой из&nbsp;чешуи дракона +3</small></div>
+<div><small>Предложения и&nbsp;замечания <a href="mailto:aratak@anahoret.com">шлите редактору</a>.</small></div>
+
+</div>
+
+    </div>
+  </footer>
+</div>
+<!-- Yandex.Metrika counter -->
+<div style="display:none;"><script type="text/javascript">
+(function(w, c) {
+    (w[c] = w[c] || []).push(function() {
+        try {
+            w.yaCounter10762477 = new Ya.Metrika({id:10762477, enableAll: true});
+        }
+        catch(e) { }
+    });
+})(window, "yandex_metrika_callbacks");
+</script></div>
+<script src="//mc.yandex.ru/metrika/watch.js" type="text/javascript" defer="defer"></script>
+<noscript><div><img src="//mc.yandex.ru/watch/10762477" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+
+</body>
+</html>

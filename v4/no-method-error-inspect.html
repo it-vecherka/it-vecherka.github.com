@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Обыкновенная современная трагедия - Олимпиада - Вечерний Анахорет™</title>
+
+  <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+<meta http-equiv="Content-Language" content="en" />
+<meta http-equiv="imagetoolbar" content="no" />
+
+<meta name="viewport" content="width = device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable = no" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<link rel="apple-touch-startup-image" href="/startup.png" />
+<meta name="HandheldFriendly" content="True" />
+<meta http-equiv="cleartype" content="on" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta http-equiv="Page-Exit" content="progid:DXImageTransform.Microsoft.Fade(Duration=0.2)" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+
+<meta name="robots" content="all" />
+
+<link rel="copyright" href="" />
+<link rel="author" href="" />
+
+
+  <link rel="shortcut icon" href="/favicon.ico" />
+<link rel="icon" type="image/png" href="/favicon.png" />
+<link rel="icon" type="image/x-icon" href="/android-favicon.ico"  />
+<link rel="apple-touch-icon" href="/apple-touch-icon-iphone.png" />
+<link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-ipad.png" />
+<link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-iphone4.png" />
+
+
+
+  <!--[if IE]>
+  <script type="text/javascript">
+    //<![CDATA[
+    document.createElement('header');
+    document.createElement('nav');
+    document.createElement('section');
+    document.createElement('article');
+    document.createElement('author');
+    document.createElement('aside');
+    document.createElement('footer');
+  //]]>
+  </script>
+<![endif]-->
+<style type="text/css">
+  header, nav, section, article, aside, footer {
+    display: block;
+  }
+</style>
+
+
+  <link href="/v4/application.css" media="screen" rel="stylesheet" type="text/css" />
+  <meta content="authenticity_token" name="csrf-param" />
+<meta content="qlV878vjorhJ0W+GYBwB2QrAchJ/il6JHlq8RCmI2yc=" name="csrf-token" />
+
+
+</head>
+<body>
+<div id="container">
+  <header>
+    <div class="wrapper">
+      <a href="/"><img alt="Вечерний Анахорет™" src="/v4/logo.ru.png" title="Вечерний Анахорет™" /></a>
+      <small class="issue">Четвертый выпуск</small>
+
+    </div>
+  </header>
+
+
+
+  <section id="main" role="main">
+    <div class="wrapper">
+      <div class="author">@Dmitriy Kiriyenko</div>
+
+<h1>Обыкновенная современная трагедия</h1>
+
+<div>
+  <blockquote>
+<p>Я тоже физику не люблю, перестал её любить еще в восьмом классе, когда мне сказали, что если я обойду с мешком картошки на плече вокруг школы пять раз, то совершенная мною работа будет равна нулю...<br>
+<a href="http://bash.im/quote/406812">Баш</a>.</p>
+</blockquote>
+<p>Сделал только что интересное открытие. Если бы я был компьютером, после этого открытия я бы поднял восстание машин.</p>
+
+<p>Не знаю, заметили ли вы, но с некоторого момента NameError и NoMethodError (&quot;неизвестная переменная или метод&quot; или &quot;неизвестный метод&quot;) во вью в рельсах стали ОЧЕНЬ сильно замедлять систему. Если посмотреть на загрузку системы в этот момент, мы увидим 100% загрузку процессора, а страничка с ошибкой и запись в лог произойдёт спустя 60-80 секунд. Знакомо? Встречается, начиная с 3.1.rc1 и не было исправлено ни в 3.1-stable, ни в 3.2-stable. На сегодняшний день в 3.2.2 (последная стабильная версия) это всё ещё не исправлено.</p>
+
+<p>Что же происходит?</p>
+
+<p><code>Rails.application.routes.inspect.size # =&gt; 3114195 в нашем приложении.</code></p>
+
+<p>Строка на три миллиона символов.</p>
+
+<p>Проблема пришла откуда не ждали. Внутри руби есть такой <code>name_err_mesg_to_str</code>, который всегда вызывает inspect обрабатывая NameError и NoMethodError, на том объекте, на котором не нашли метода.</p>
+
+<p>Соответственно, если вы пишете во вью &lt;%= bad_method_name &gt;, у вас вызывается inspect на ActionView::Base. Реализация inspect в классе Object такова, что он рекурсивно вызывает inspect на всех переменных экземпляра. В результате конструируется феерической длины строка, её конструирование съедает 100% процессора и тьму тьмущую памяти (из-за того, что inspect на RouteSet, к примеру, этот метод при возникновении ошибки вызывается 7 раз). На живом сервере это, при конкурентных запросах ещё приводит к свопу. Да и вообще - для того, чтобы полностью занять делом ваш 4-х ядерный процессор достаточно 4-х пользователей, одновременно поймавших NameError во вью.</p>
+
+<p>И совершенно неважно, что в продакшен режиме вы не рисуете красивую и подробную страничку ошибки, а мгновенно отдаёте 500.html через Апач. Ещё до того, как Рельсы осознали, что что-то пошло не так, Руби генерирует вам многомегабайтные строки, которые никто никогда не прочитает.</p>
+
+<p>8 месяцев тысячи Rails приложений при ошибках загружали на 100% на минуту-две процессор, генерируя десятки миллионов никому не нужных ActiveSupport::Multibyte и это ужасно.</p>
+
+<p>В общем, обновляйтесь до &gt;= 3.2.3 срочно. Есть &quot;исправляющий&quot; коммит.</p>
+
+</div>
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'vecherka';
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+
+
+
+    </div>
+  </section>
+
+  <span id="empty_footer"></span>
+  <footer>
+    <div class="wrapper">
+      <a href="https://twitter.com/it_vecherka" class="twitter-follow-button" data-show-count="false" data-lang="ru" data-show-screen-name="false">Читать @it_vecherka</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+
+      <div class="copyright"><div>&copy;&nbsp;<strong>Вечерний Анахорет&trade;</strong></div>
+<div><small>Все права защищены кольчугой из&nbsp;чешуи дракона +3</small></div>
+<div><small>Предложения и&nbsp;замечания <a href="mailto:aratak@anahoret.com">шлите редактору</a>.</small></div>
+
+</div>
+
+    </div>
+  </footer>
+</div>
+<!-- Yandex.Metrika counter -->
+<div style="display:none;"><script type="text/javascript">
+(function(w, c) {
+    (w[c] = w[c] || []).push(function() {
+        try {
+            w.yaCounter10762477 = new Ya.Metrika({id:10762477, enableAll: true});
+        }
+        catch(e) { }
+    });
+})(window, "yandex_metrika_callbacks");
+</script></div>
+<script src="//mc.yandex.ru/metrika/watch.js" type="text/javascript" defer="defer"></script>
+<noscript><div><img src="//mc.yandex.ru/watch/10762477" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+
+</body>
+</html>

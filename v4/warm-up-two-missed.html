@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Два пропущенных числа - Олимпиада - Вечерний Анахорет™</title>
+
+  <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+<meta http-equiv="Content-Language" content="en" />
+<meta http-equiv="imagetoolbar" content="no" />
+
+<meta name="viewport" content="width = device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable = no" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<link rel="apple-touch-startup-image" href="/startup.png" />
+<meta name="HandheldFriendly" content="True" />
+<meta http-equiv="cleartype" content="on" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta http-equiv="Page-Exit" content="progid:DXImageTransform.Microsoft.Fade(Duration=0.2)" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+
+<meta name="robots" content="all" />
+
+<link rel="copyright" href="" />
+<link rel="author" href="" />
+
+
+  <link rel="shortcut icon" href="/favicon.ico" />
+<link rel="icon" type="image/png" href="/favicon.png" />
+<link rel="icon" type="image/x-icon" href="/android-favicon.ico"  />
+<link rel="apple-touch-icon" href="/apple-touch-icon-iphone.png" />
+<link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-ipad.png" />
+<link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-iphone4.png" />
+
+
+
+  <!--[if IE]>
+  <script type="text/javascript">
+    //<![CDATA[
+    document.createElement('header');
+    document.createElement('nav');
+    document.createElement('section');
+    document.createElement('article');
+    document.createElement('author');
+    document.createElement('aside');
+    document.createElement('footer');
+  //]]>
+  </script>
+<![endif]-->
+<style type="text/css">
+  header, nav, section, article, aside, footer {
+    display: block;
+  }
+</style>
+
+
+  <link href="/v4/application.css" media="screen" rel="stylesheet" type="text/css" />
+  <meta content="authenticity_token" name="csrf-param" />
+<meta content="qlV878vjorhJ0W+GYBwB2QrAchJ/il6JHlq8RCmI2yc=" name="csrf-token" />
+
+
+</head>
+<body>
+<div id="container">
+  <header>
+    <div class="wrapper">
+      <a href="/"><img alt="Вечерний Анахорет™" src="/v4/logo.ru.png" title="Вечерний Анахорет™" /></a>
+      <small class="issue">Четвертый выпуск</small>
+
+    </div>
+  </header>
+
+
+
+  <section id="main" role="main">
+    <div class="wrapper">
+      <div class="author">@Alexey Osipenko</div>
+
+<h1>Два пропущенных числа</h1>
+
+<div>
+  <p>Вашему вниманию <a href="https://gist.github.com/2834414">предлагалась задачка</a>, дабы не мозги не превращались в желе. На используемый язык ограничений не было. Главное, требовалось приложить инструкции для запуска. Победитель определялся по наименьшей сложности алгоритма. </p>
+
+<p>Надо сказать, задачка была так себе, но в то же время, подумать было о чём.</p>
+
+<p>Прежде всего хочется сказать спасибо всем, кто не остался в стороне. Повседневное решение чьих-то бытовых проблем - это не то, что привлекло нас в программирование и сердца наши полнятся радостью от осознания того, что мы не одиноки.</p>
+
+<p>Традиционно отличился Андрей &quot;новичок в программировании&quot; Кутейко <a href="https://github.com/andy128k">andy128k</a> в нескольких номинациях:</p>
+
+<ul>
+<li><em>&quot;Первая ласточка&quot;</em> - его решение на питоне пришло первым.</li>
+<li><em>&quot;Илита&quot;</em> - решение на Lisp.</li>
+<li><em>&quot;Мыслитель&quot;</em> - есть решение для поиска N чисел.</li>
+<li><em>&quot;По перед батька в пекло&quot;</em> - в Питоне есть необычная оптимизация для более эффективного (особенно по памяти) slice.</li>
+<li><em>&quot;Не используй микроскоп&quot;</em> и <em>&quot;Шаман&quot;</em> - отдельное спасибо за решение на языке J.</li>
+</ul>
+
+<p><a href="https://github.com/zhck">Евгений Шелест</a> предложил итеративное решение для поиска двух со сложностью O(log(N)). Дмитрий Кириенко, конечно же, не мог остаться в стороне и предложил решение на Руби (совпадающее c Common Lisp решением Андрея на 100%) и на MySQL - там эта задача наименее надумана - поиск пропущенных идентификаторов. На MySQL, правда, вышло O(N) или даже хуже, но там вообще не до жиру. <a href="https://github.com/bronislav">Антон Ильин</a>, тоже предложил своё решение.</p>
+
+<p>На десяти тысячах впереди всех питон, за ним лисп, два итеративных решения на Руби. MySQL - без комментариев. </p>
+
+<p>Владимр Львович заставил нас взглянуть на проблему с другой стороны - а не получится ли понизить общую сложность до O(log(N)) при помощи бинарного поиска по файлу. К сожалению, его бинарный поиск не терминирован и в итоге выходит на линейную сложность, а как его терминировать я пока понять не могу. Может, что и никак. И за чертой контрольного срока предоставил своё решение, но решение это такое, что ему можно это простить. </p>
+
+<p>Замеры производительности:</p>
+
+<p><img src="http://i.minus.com/iZtzGhU3JivtL.png" alt=""><br>
+</p>
+
+<p>Несколько выводов.</p>
+
+<ol>
+<li>Безусловным победителем был объявлен Андрей Кутейко, понять бы ещё, что из этого вытекает. Надеемся, он хотя бы получил удовольствие =)</li>
+<li>Иногда обобщение приводит к улучшению кода. Решения для двух чисел намного более уродливые, чем решения для N.</li>
+<li>Соблюдая первое правило алгоритмиста - &quot;Can we do better?&quot; и благодаря Владимиру Львовичу мы взглянули на проблему с неожиданной стороны. Я ещё не уверен, что там нет полноценного логарифмического решения.</li>
+<li>Используйте правильный инструмент. Предназначенный для обработки данных и особенно массивов, J, явил нам довольно красивое и аккуратное решение, которое в языках более общего назначения как минимум занимает больше букв.</li>
+<li>Очень сложно программировать в SQL.</li>
+</ol>
+
+<p>Приз зрительский симпатий вручается Владимиру Львовичу, решение которого прошло за чертой смерти, но объективно было лучшим. Победа в следующих номинациях:</p>
+
+<ul>
+<li><em>&quot;А у вас была логарифмическая линейка?&quot;</em> - его решение единственное имеет честную логарифмическую сложность.</li>
+<li><em>&quot;Свой среди чужих&quot;</em> - заметьте, решение написано на Руби, причём, с глубоким пониманием того, как работает, к примеру, класс &quot;File&quot;.</li>
+<li><em>&quot;Обойдусь без записной книжки&quot;</em> - решение потребляет константную дополнительную память.</li>
+<li><em>&quot;Сынки&quot;</em> - посмотрите на производительность.</li>
+<li><em>&quot;Это же элементарно, Ватсон!&quot;</em> - решение не требует указания количества пропущенных чисел. Недостаток - не находит числа, пропущенные в конце. Но тут или то, или то.</li>
+<li><em>&quot;Правый хвост длиннее&quot;</em> - интересный и математически обоснованный подход к проблеме бинарного поиска. <a href="https://gist.github.com/2834414#gistcomment-342948">Почитайте историю комментирования гиста</a> - это довольно интересно.</li>
+<li><em>&quot;Чем докажешь&quot;</em> - оказаться правым в споре с Андреем Кутейко о программировании.</li>
+</ul>
+
+<p>Ждите новых разминок!</p>
+
+<h2></h2>
+
+<p>Дима и Леша.</p>
+
+</div>
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'vecherka';
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+
+
+
+    </div>
+  </section>
+
+  <span id="empty_footer"></span>
+  <footer>
+    <div class="wrapper">
+      <a href="https://twitter.com/it_vecherka" class="twitter-follow-button" data-show-count="false" data-lang="ru" data-show-screen-name="false">Читать @it_vecherka</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+
+      <div class="copyright"><div>&copy;&nbsp;<strong>Вечерний Анахорет&trade;</strong></div>
+<div><small>Все права защищены кольчугой из&nbsp;чешуи дракона +3</small></div>
+<div><small>Предложения и&nbsp;замечания <a href="mailto:aratak@anahoret.com">шлите редактору</a>.</small></div>
+
+</div>
+
+    </div>
+  </footer>
+</div>
+<!-- Yandex.Metrika counter -->
+<div style="display:none;"><script type="text/javascript">
+(function(w, c) {
+    (w[c] = w[c] || []).push(function() {
+        try {
+            w.yaCounter10762477 = new Ya.Metrika({id:10762477, enableAll: true});
+        }
+        catch(e) { }
+    });
+})(window, "yandex_metrika_callbacks");
+</script></div>
+<script src="//mc.yandex.ru/metrika/watch.js" type="text/javascript" defer="defer"></script>
+<noscript><div><img src="//mc.yandex.ru/watch/10762477" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+
+</body>
+</html>
