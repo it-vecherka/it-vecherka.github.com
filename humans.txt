@@ -1,0 +1,9 @@
+/* TEAM */
+  Dmitry Kiriyenko, Alexey Osipenko
+  
+
+/* SITE */
+  Language: Russian
+  Doctype: HTML5
+  Language: ruby
+  Ruby: 1.9.3
