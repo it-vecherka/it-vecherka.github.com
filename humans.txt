@@ -1,6 +1,5 @@
 /* TEAM */
   Dmitry Kiriyenko, Alexey Osipenko
-  
 
 /* SITE */
   Language: Russian
